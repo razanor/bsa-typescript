@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+    <link rel="icon" type="image/x-icon" href="./resources/logo.ico">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <title>Street Figth</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root">
+      <button id="start-game">Start fight</button>
+    </div>
+    <div id="loading-overlay">
+      <img src="resources/logo.png"/>
+    </div>
+    <div id="modal-overlay">
+      <div class="skills-modal">
+        <p class="skill-label">Health</p>
+        <input type="number" class="skill-input" id="input-health" min="0">
+        <p class="skill-label">Attack</p>
+        <input type="number" class="skill-input" id="input-attack" min="0">
+        <button class="update-skills">Save</button>
+      </div>
+    </div>
+    <script src="dist/bundle.js"></script>
+  </body>
+</html>
