@@ -1,48 +1,59 @@
 import View from './view';
 import FighterView from './fighterView';
 import { fighterService } from './services/fightersService';
+import FighterValues from './helpers/interfaces';
 
-class FightersView extends View {
-  constructor(fighters) {
+interface IFightersView {
+  createFighters(fighters: FighterValues[]): void,
+  showModal(fighter: FighterValues): void,
+  handleModalOverlayClick(event: MouseEvent): void,
+  handleFighterClick(event: MouseEvent, fighter: FighterValues): Promise<void>
+};
+
+class FightersView extends View implements IFightersView {
+  handleClick: Function;
+
+  constructor(fighters: FighterValues[]) {
     super();
     
     this.handleClick = this.handleFighterClick.bind(this);
     this.createFighters(fighters);
   }
 
-  static modalOverley = document.getElementById('modal-overlay');
-  static inputHealth = document.getElementById('input-health');
-  static inputAttack = document.getElementById('input-attack');
-  static updateSkillsBtn = document.querySelector('.update-skills');
-  static skillsModal = document.querySelector('.skills-modal');
+  static modalOverley = document.getElementById('modal-overlay') as HTMLElement;
+  static inputHealth = document.getElementById('input-health') as HTMLInputElement;
+  static inputAttack = document.getElementById('input-attack') as HTMLInputElement;
+  static updateSkillsBtn = document.querySelector('.update-skills') as HTMLElement;
+  static skillsModal = document.querySelector('.skills-modal') as HTMLElement;
   static fightersDetailsMap = new Map();
 
-  createFighters(fighters) {
+  createFighters(fighters: FighterValues[]) {
     const fighterElements = fighters.map(fighter => {
       const fighterView = new FighterView(fighter, this.handleClick);
       return fighterView.element;
     });
 
     this.element = this.createElement({ tagName: 'div', className: 'fighters' });
-    this.element.append(...fighterElements);
+    fighterElements.forEach(fighter => {
+      this.element.appendChild(fighter);
+    });
     FightersView.modalOverley.addEventListener('click', event => this.handleModalOverlayClick(event), false);
   }
 
-  showModal(fighter) {
+  showModal(fighter: FighterValues) {
     const { health, attack, _id } = fighter;
     
 
     FightersView.modalOverley.style.visibility = 'visible';
     FightersView.skillsModal.classList.add('open');
 
-    FightersView.inputHealth.value = health;
-    FightersView.inputAttack.value = attack;
+    FightersView.inputHealth.value = String(health);
+    FightersView.inputAttack.value = String(attack);
     FightersView.updateSkillsBtn.dataset.id = _id;
-
   }
 
-  handleModalOverlayClick(event) {
-    const target = event.target;
+  handleModalOverlayClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
 
     if (target.id == 'modal-overlay') {
       FightersView.skillsModal.classList.remove('open');      
@@ -55,11 +66,11 @@ class FightersView extends View {
       const updatedFighter = { ...FightersView.fightersDetailsMap.get(target.dataset.id), ...updatedSkills };
       FightersView.fightersDetailsMap.set(target.dataset.id, updatedFighter);
       FightersView.skillsModal.classList.remove('open');      
-      target.parentNode.parentNode.style.visibility = 'hidden';
+      (<HTMLElement> target.parentNode!.parentNode).style.visibility = 'hidden';
     }
   }
 
-  async handleFighterClick(event, fighter) {
+  async handleFighterClick(event: MouseEvent, fighter: FighterValues) {
     try {
       const { _id } = fighter;
 
@@ -67,11 +78,11 @@ class FightersView extends View {
         const fighterWithDetails = await fighterService.getFighterDetails(_id);     
         FightersView.fightersDetailsMap.set(_id, fighterWithDetails);
       }
-      if (event.target.className != 'checked-fighter') {
+      if ((<HTMLElement>event.target)!.className != 'checked-fighter') {
         this.showModal(FightersView.fightersDetailsMap.get(_id));
       }
     } catch {
-      console.warn(error);
+      console.warn(Error);
     }
   }
 }

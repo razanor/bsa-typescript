@@ -1,6 +1,12 @@
 import { callApi } from '../helpers/apiHelper';
 
-class FighterService {
+interface IFighterService {
+  getFighters(): Promise <Array<object>>,
+  getFighterDetails(_id: string) : Promise <object>
+};
+
+class FighterService implements IFighterService {
+
   async getFighters() {
     try {
       const endpoint = 'fighters.json';
@@ -12,7 +18,7 @@ class FighterService {
     }
   }
 
-  async getFighterDetails(_id) {
+  async getFighterDetails(_id: string) {
     try {
       const endpoint = `details/fighter/${_id}.json`;
       const apiResult = await callApi(endpoint, 'GET');

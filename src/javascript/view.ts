@@ -1,7 +1,22 @@
-class View {
-  element;
 
-  createElement({ tagName, className = '', attributes = {} }) {
+interface CreateElement {
+  tagName: string,
+  className: string,
+  attributes?: {
+    [key:string]: string
+  }
+}
+
+interface IView {
+  createElement(obj: object): HTMLElement,
+  createImage(source: string, className: string, id: string): HTMLElement,
+  createButton(className: string, text: string): HTMLElement
+}
+
+class View implements IView {
+  public element!: HTMLElement;
+
+  createElement({ tagName, className = '', attributes = {} }: CreateElement) {
     const element = document.createElement(tagName);
     element.classList.add(className);
     Object.keys(attributes).forEach(key => element.setAttribute(key, attributes[key]));
@@ -9,7 +24,7 @@ class View {
     return element;
   }
 
-  createImage(source, className, id = '') {
+  createImage(source: string, className: string, id = '') {
     const attributes = { src: source, id: id };
     const imgElement = this.createElement({
       tagName: 'img',
@@ -20,7 +35,7 @@ class View {
     return imgElement;
   }
 
-  createButton(className, text) {
+  createButton(className: string, text: string) {
     const btnElement = this.createElement({
       tagName: 'button',
       className

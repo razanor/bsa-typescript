@@ -2,30 +2,34 @@ import FightersView from './fightersView';
 import { fighterService } from './services/fightersService';
 import { startGame } from './gameStarter';
 
-class App {
+interface IApp {
+  startApp(): Promise <void>;
+};
+
+class App implements IApp {
+  private rootElement = document.getElementById('root') as HTMLElement;
+  private loadingElement = document.getElementById('loading-overlay') as HTMLElement;
+  private startGameBtn = document.getElementById('start-game') as HTMLElement;
+
   constructor() {
     this.startApp();
   }
 
-  static rootElement = document.getElementById('root');
-  static loadingElement = document.getElementById('loading-overlay');
-  static startGameBtn = document.getElementById('start-game');
-
   async startApp() {
     try {
-      App.loadingElement.style.visibility = 'visible';
+      this.loadingElement.style.visibility = 'visible';
       
       const fighters = await fighterService.getFighters();
       const fightersView = new FightersView(fighters);
       const fightersElement = fightersView.element;
 
-      App.rootElement.appendChild(fightersElement);
-      App.startGameBtn.addEventListener('click', event => startGame(event), false);
+      this.rootElement.appendChild(fightersElement);
+      this.startGameBtn.addEventListener('click', event => startGame(), false);
     } catch (error) {
       console.warn(error);
-      App.rootElement.innerText = 'Failed to load data';
+      this.rootElement.innerText = 'Failed to load data';
     } finally {
-      App.loadingElement.style.visibility = 'hidden';
+      this.loadingElement.style.visibility = 'hidden';
     }
   }
 }
