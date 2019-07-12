@@ -1,12 +1,6 @@
 import View from './view';
 
-interface IFighterArea {
-    createFightArea(firstImg: string, secondImg: string): void,
-    createHealthIndicator(color: string, id: string): string,
-    deleteFightArea(): void
-};
-
-class FightArea extends View implements IFighterArea {
+class FightArea extends View {
     constructor(action: string, firstImg = '', secondImg = '') {
         super();
         
@@ -19,7 +13,7 @@ class FightArea extends View implements IFighterArea {
     static rootElement = document.getElementById('root');
     static startBtn = document.querySelector('#start-game');
 
-    createFightArea(firstImg: string, secondImg: string) {
+    private createFightArea(firstImg: string, secondImg: string) {
         (<HTMLElement> document.querySelector('.fighters'))!.style.display = 'none';
         (<HTMLElement> FightArea.startBtn)!.style.display = 'none';
 
@@ -42,7 +36,7 @@ class FightArea extends View implements IFighterArea {
         FightArea.rootElement!.appendChild(this.element);
     }
 
-    createHealthIndicator(color: string, id: string) {
+    private createHealthIndicator(color: string, id: string) {
         const healthBar = `<div class="w3-light-grey w3-round">
         <div class="w3-container w3-${color} w3-round" id="${id}"
         style="width:100%; margin-bottom: 60px;">Full health</div></div>`; 
@@ -50,7 +44,7 @@ class FightArea extends View implements IFighterArea {
         return healthBar;
     }
 
-    deleteFightArea() {
+    private deleteFightArea() {
         const selectedFighters = document.querySelectorAll('.checked-fighter:checked');
         [...selectedFighters].forEach( el => { (<HTMLInputElement>el).checked = false; });
         (<HTMLElement> document.querySelector('.fighters')).style.display = 'flex';

@@ -1,17 +1,16 @@
 import FighterValues from './helpers/interfaces';
 
 interface IFighter {
-    randomNumber(min: number, max: number): number,
     getHitPower(): number,
     getBlockPower(): number
 }
 
 class Fighter implements IFighter {
-    public name: string;
-    public health: number;
-    public attack: number;
-    public defense: number;
-    public source: string;
+    name: string;
+    health: number;
+    attack: number;
+    defense: number;
+    source: string;
 
     constructor({ name, health, attack, defense, source }: FighterValues) {
         this.name = name;
@@ -19,10 +18,6 @@ class Fighter implements IFighter {
         this.attack = attack || 0;
         this.defense = defense || 0;
         this.source = source;
-    }
-
-    randomNumber(min: number, max: number) {
-        return Math.floor(Math.random() * (max - min + 1) ) + min;
     }
 
     getHitPower() {
@@ -33,6 +28,10 @@ class Fighter implements IFighter {
     getBlockPower() {
         const dodgeChance = this.randomNumber(1, 2);
         return this.defense * dodgeChance;
+    }
+
+    private randomNumber(min: number, max: number) {
+        return Math.floor(Math.random() * (max - min + 1) ) + min;
     }
 }
 

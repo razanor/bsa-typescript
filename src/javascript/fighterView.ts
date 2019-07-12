@@ -1,20 +1,14 @@
 import View from './view';
 import FighterValues from './helpers/interfaces';
 
-interface IFighterView {
-  createFighter(fighter: FighterValues, handleClick: Function): void,
-  createName(name: string): HTMLElement,
-  createCheckbox(id: string): HTMLElement
-};
-
-class FighterView extends View implements IFighterView {
+class FighterView extends View {
   constructor(fighter: FighterValues, handleClick: Function) {
     super();
 
     this.createFighter(fighter, handleClick);
   }
 
-  createFighter(fighter: FighterValues, handleClick: Function) {
+  private createFighter(fighter: FighterValues, handleClick: Function) {
     const { name, source, _id } = fighter;
     const nameElement = this.createName(name);
     const imageElement = this.createImage(source, 'fighter-image');
@@ -27,14 +21,14 @@ class FighterView extends View implements IFighterView {
     this.element.addEventListener('click', event => handleClick(event, fighter), false);
   }
 
-  createName(name: string) {
+  private createName(name: string) {
     const nameElement = this.createElement({ tagName: 'span', className: 'name' });
     nameElement.innerText = name;
 
     return nameElement;
   }
 
-  createCheckbox(id: string) {
+  private createCheckbox(id: string) {
     const attributes = { type: "checkbox", ["data-id"]: id };
     const checkboxElement = this.createElement({
       tagName: 'input',

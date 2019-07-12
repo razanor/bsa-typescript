@@ -7,16 +7,10 @@ interface CreateElement {
   }
 }
 
-interface IView {
-  createElement(obj: object): HTMLElement,
-  createImage(source: string, className: string, id: string): HTMLElement,
-  createButton(className: string, text: string): HTMLElement
-}
-
-class View implements IView {
+class View {
   public element!: HTMLElement;
 
-  createElement({ tagName, className = '', attributes = {} }: CreateElement) {
+  protected createElement({ tagName, className = '', attributes = {} }: CreateElement) {
     const element = document.createElement(tagName);
     element.classList.add(className);
     Object.keys(attributes).forEach(key => element.setAttribute(key, attributes[key]));
@@ -24,7 +18,7 @@ class View implements IView {
     return element;
   }
 
-  createImage(source: string, className: string, id = '') {
+  protected createImage(source: string, className: string, id = '') {
     const attributes = { src: source, id: id };
     const imgElement = this.createElement({
       tagName: 'img',
@@ -35,7 +29,7 @@ class View implements IView {
     return imgElement;
   }
 
-  createButton(className: string, text: string) {
+  protected createButton(className: string, text: string) {
     const btnElement = this.createElement({
       tagName: 'button',
       className

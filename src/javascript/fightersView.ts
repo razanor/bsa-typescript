@@ -3,14 +3,7 @@ import FighterView from './fighterView';
 import { fighterService } from './services/fightersService';
 import FighterValues from './helpers/interfaces';
 
-interface IFightersView {
-  createFighters(fighters: FighterValues[]): void,
-  showModal(fighter: FighterValues): void,
-  handleModalOverlayClick(event: MouseEvent): void,
-  handleFighterClick(event: MouseEvent, fighter: FighterValues): Promise<void>
-};
-
-class FightersView extends View implements IFightersView {
+class FightersView extends View {
   handleClick: Function;
 
   constructor(fighters: FighterValues[]) {
@@ -27,7 +20,7 @@ class FightersView extends View implements IFightersView {
   static skillsModal = document.querySelector('.skills-modal') as HTMLElement;
   static fightersDetailsMap = new Map();
 
-  createFighters(fighters: FighterValues[]) {
+  private createFighters(fighters: FighterValues[]) {
     const fighterElements = fighters.map(fighter => {
       const fighterView = new FighterView(fighter, this.handleClick);
       return fighterView.element;
@@ -40,7 +33,7 @@ class FightersView extends View implements IFightersView {
     FightersView.modalOverley.addEventListener('click', event => this.handleModalOverlayClick(event), false);
   }
 
-  showModal(fighter: FighterValues) {
+  private showModal(fighter: FighterValues) {
     const { health, attack, _id } = fighter;
     
 
@@ -52,7 +45,7 @@ class FightersView extends View implements IFightersView {
     FightersView.updateSkillsBtn.dataset.id = _id;
   }
 
-  handleModalOverlayClick(event: MouseEvent) {
+  private handleModalOverlayClick(event: MouseEvent) {
     const target = event.target as HTMLElement;
 
     if (target.id == 'modal-overlay') {
@@ -70,7 +63,7 @@ class FightersView extends View implements IFightersView {
     }
   }
 
-  async handleFighterClick(event: MouseEvent, fighter: FighterValues) {
+  private async handleFighterClick(event: MouseEvent, fighter: FighterValues) {
     try {
       const { _id } = fighter;
 

@@ -9,5 +9,5 @@
     "strictFunctionTypes": true,
     "esModuleInterop": true,
     "downlevelIteration": true
-  },
+  }
 }
