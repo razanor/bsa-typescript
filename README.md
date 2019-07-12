@@ -1,5 +1,5 @@
 # bsa-typescript
-##Installation
+Installation
 ```
 npm install
 ```
